@@ -1,0 +1,40 @@
+#!/bin/bash
+
+current_dir=$(pwd)
+
+if [ -z $1  ]; then
+    echo "Please provide the backup directory at the first argument"
+    exit 1
+fi
+
+cd $1
+
+if [ ! -f .env ]; then
+    echo "Please create .env file"
+    exit 1
+fi
+
+
+if [ ! command -v sshpass &> /dev/null ]; then
+    sudo apt update
+    echo "Installing sshpass..."
+    sudo apt install sshpass -y
+fi
+
+if [ ! command -v scp &> /dev/null ]; then
+    sudo apt update
+    echo "Installing openssh-client..."
+    sudo apt install openssh-client -y
+fi
+
+source .env
+
+rsync -avz -e "sshpass -p $password ssh -p $port" $username@$remote:$workspace .
+
+if [ ! $? -eq 0 ]; then
+    echo "Backup failed"
+    exit 1
+fi
+
+echo -e "\033[0;32m\nDone installing\033[0m\n"
+cd $current_dir
