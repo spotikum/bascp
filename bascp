@@ -14,6 +14,11 @@ if [ ! -f .env ]; then
     exit 1
 fi
 
+if [ ! command -v ssh &> /dev/null ]; then
+    sudo apt update
+    echo "Installing ssh..."
+    sudo apt install ssh -y
+fi
 
 if [ ! command -v sshpass &> /dev/null ]; then
     sudo apt update
@@ -21,10 +26,10 @@ if [ ! command -v sshpass &> /dev/null ]; then
     sudo apt install sshpass -y
 fi
 
-if [ ! command -v scp &> /dev/null ]; then
+if [ ! command -v rsync &> /dev/null ]; then
     sudo apt update
-    echo "Installing openssh-client..."
-    sudo apt install openssh-client -y
+    echo "Installing rsync..."
+    sudo apt install rsync -y
 fi
 
 source .env
