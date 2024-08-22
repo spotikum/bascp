@@ -3,14 +3,14 @@
 current_dir=$(pwd)
 
 if [ -z $1  ]; then
-    echo "Please provide the backup directory at the first argument"
+    echo -e "\033[0;31m\nPlease provide the backup directory at the first argument\033[0m\n"
     exit 1
 fi
 
 cd $1
 
 if [ ! -f .env ]; then
-    echo "Please create .env file"
+    echo -e "\033[0;31m\nPlease create .env file\033[0m\n"
     exit 1
 fi
 
@@ -32,9 +32,9 @@ source .env
 rsync -avz -e "sshpass -p $password ssh -p $port" $username@$remote:$workspace .
 
 if [ ! $? -eq 0 ]; then
-    echo "Backup failed"
+    echo -e "\033[0;31m\nBackup failed\033[0m\n"
     exit 1
 fi
 
-echo -e "\033[0;32m\nDone installing\033[0m\n"
+echo -e "\033[0;32m\nDone backup\033[0m\n"
 cd $current_dir
