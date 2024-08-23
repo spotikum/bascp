@@ -25,6 +25,7 @@ fi
 
 if [ ! -d $HOME/.local/bin ]; then
      mkdir -p $HOME/.local/bin
+     export PATH=$PATH:$HOME/.local/bin
 fi
 
 chmod +x bascp.sh
