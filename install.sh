@@ -28,7 +28,7 @@ if [ ! -d $HOME/.local/bin ]; then
      export PATH=$PATH:$HOME/.local/bin
 fi
 
-chmod +x bascp.sh
 cp ./bascp.sh $HOME/.local/bin/bascp
+chmod +x $HOME/.local/bin/bascp
 
 echo -e "\033[0;32m\nbascp installed successfully\033[0m\n"
