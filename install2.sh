@@ -1,21 +1,48 @@
 #!/bin/bash
+
+if [ -f /etc/os-release ]; then
+     . /etc/os-release
+     OS=$ID_LIKE
+else
+     echo "Cannot determine the operating system."
+     exit 1
+fi
+
+echo "Detected OS: $OS"
+
+pkginstall() {
+     if [ "$OS" == "debian" ]; then
+          sudo apt update
+          sudo apt install -y $1
+     elif [ "$OS" == "rhel fedora" ]; then
+          sudo yum install -y $1
+     elif [ "$OS" == "arch" ]; then
+          sudo pacman -S $1 --noconfirm
+     else
+          echo "Unsupported OS"
+          exit 1
+     fi
+}
+
 bascpInstall() {
      if [ ! command -v ssh &> /dev/null ]; then
-          sudo apt update
           echo "Installing ssh..."
-          sudo apt install ssh -y
+          pkginstall openssh
      fi
 
      if [ ! command -v sshpass &> /dev/null ]; then
-          sudo apt update
           echo "Installing sshpass..."
-          sudo apt install sshpass -y
+          pkginstall sshpass
      fi
 
      if [ ! command -v rsync &> /dev/null ]; then
-          sudo apt update
           echo "Installing rsync..."
-          sudo apt install rsync -y
+          pkginstall rsync
+     fi
+
+     if [ ! command -v wget &> /dev/null ]; then
+          echo "Installing wget..."
+          pkginstall wget
      fi
 
      if [ ! -d $HOME/.local/bin ]; then
@@ -23,7 +50,7 @@ bascpInstall() {
           export PATH=$PATH:$HOME/.local/bin
      fi
 
-     wget -c https://raw.githubusercontent.com/spotikum/bascp/master/bascp.sh -o $HOME/.local/bin/bascp
+     wget -O $HOME/.local/bin/bascp https://raw.githubusercontent.com/spotikum/bascp/master/bascp.sh
      chmod +x $HOME/.local/bin/bascp
 
      echo -e "\033[0;32m\nbascp installed successfully\033[0m\n"
