@@ -9,29 +9,28 @@ source /dev/stdin <<< "$(wget -qO- https://raw.githubusercontent.com/spotikum/ba
 create a new directory
 
 ```shell
-mkdir <directory_mame>
-cd <directory_mame>
+mkdir <directory_name>
+cd <directory_name>
 ```
-create .env file
+create `.env` file
 ```shell
-# server
 port="22"
 remote="xxx.xxx.xxx.xxx"
 username="username"
 password="password"
-workspace="$HOME/workspace"
+workspace="directory"
 ```
 
 run bascp
 ```shell
-bascp $HOME/<directory_mame>
+bascp .
 ```
 
 or backup multiple directory
 ```shell
-bascp $HOME/<directory_mame1> $HOME/<directory_mame2>
+bascp <directory1> <directory2>
 ```
 
 ### Another Option
-- add source in `~/.bashrc`
-- using cronjob
+- add in `~/.bashrc` to run every login
+- use [cronjob](https://crontab.guru/) to run periodically
